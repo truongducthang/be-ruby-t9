@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       collection do
         get "newest", to: "products#retrieve_newest_products"
         get "recommended", to: "products#retrieve_recommended_products"
+        get 'most_purchased_this_month', to: 'products#most_purchased_this_month'
       end
     end
     get "sub_categories", to: "categories#retrieve_subcategories"

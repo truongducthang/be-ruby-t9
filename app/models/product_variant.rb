@@ -8,4 +8,6 @@ class ProductVariant < ApplicationRecord
 
   validates :sku, presence: true, uniqueness: true
   validates :stock_quantity, numericality: { greater_than_or_equal_to: 0 }
+
+  has_many :order_items
 end
