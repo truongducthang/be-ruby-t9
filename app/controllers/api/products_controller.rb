@@ -10,6 +10,6 @@ module Api
       render json: @products, status: :ok
     end
 
-    end
+
   end
 end
