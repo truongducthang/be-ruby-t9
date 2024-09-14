@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   has_many :product_variants, dependent: :destroy
   has_many :likes, as: :target, dependent: :destroy
   has_many :order_items, through: :product_variants
+  has_many :orders, through: :order_items
 
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
@@ -34,10 +35,14 @@ class Product < ApplicationRecord
   end
 
   scope :most_purchased_this_month, -> {
-    joins(product_variants: :order_items)
-      .where(order_items: { created_at: Time.current.beginning_of_month..Time.current.end_of_month })
-      .group('products.id')
-      .select('products.*, COUNT(order_items.id) as purchase_count')
+    select('products.id, products.name, product_variants.id as variant_id, product_variants.image_url as thumbnail_url, COALESCE(SUM(order_items.quantity), 0) as purchase_count')
+      .joins(:product_variants)
+      .left_joins(product_variants: { order_items: :order })
+      .where(orders: { 
+        created_at: Time.current.beginning_of_month..Time.current.end_of_month
+      })
+      .group('products.id, products.name, product_variants.id, product_variants.image_url')
+      .having('COALESCE(SUM(order_items.quantity), 0) > 0')
       .order('purchase_count DESC')
   }
 end

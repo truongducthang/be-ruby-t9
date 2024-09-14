@@ -22,5 +22,13 @@ Rails.application.routes.draw do
     get "sub_categories", to: "categories#retrieve_subcategories"
 
     resources :sessions, only: %i[create destroy]
+
+    resources :orders, only: [] do
+      collection do
+        get :unshipped
+        get :unshipped_products  # Thêm route mới này
+      end
+    end
+    
   end
 end
