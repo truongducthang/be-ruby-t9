@@ -11,8 +11,8 @@ module Api
     end
 
     def most_purchased_this_month
-      @products = Product.most_purchased_this_month.limit(10)
-      render json: @products, each_serializer: MostPurchasedProductSerializer, status: :ok
+      @product_variants = Product.most_purchased_this_month.limit(10)
+      render json: @product_variants, each_serializer: MostPurchasedProductVariantSerializer, status: :ok
     end
 
   end
