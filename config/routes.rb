@@ -26,7 +26,13 @@ Rails.application.routes.draw do
     resources :orders, only: [] do
       collection do
         get :unshipped
-        get :unshipped_products  # Thêm route mới này
+        get :unshipped_products  
+      end
+    end
+
+    resources :inquiries, only: [] do
+      collection do
+        get :by_status 
       end
     end
     
